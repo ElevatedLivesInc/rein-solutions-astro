@@ -1,0 +1,76 @@
+---
+import Layout from './_layout.astro';
+---
+
+<Layout title="ReinStarter — $99">
+  <section class="container">
+    <h1>ReinStarter — $99</h1>
+    <p>
+      A focused business upgrade: mini audit, one automation, copy refresh, and a
+      10-post social starter pack. Delivered in about 48 hours after payment.
+    </p>
+
+    <ol>
+      <li>You fill this form.</li>
+      <li>We review and send a payment link.</li>
+      <li>After payment, we deliver your ReinStarter.</li>
+    </ol>
+
+    <form id="reinstarterForm">
+      <label>
+        Name
+        <input name="name" required />
+      </label>
+      <label>
+        Email
+        <input name="email" type="email" required />
+      </label>
+      <label>
+        Website / Google Profile URL
+        <input name="url" />
+      </label>
+      <label>
+        Biggest pain right now
+        <input name="problem" />
+      </label>
+
+      <div class="form-row">
+        <button type="submit" class="btn primary">Apply for ReinStarter $99</button>
+        <div id="reinstarterStatus" class="status"></div>
+      </div>
+    </form>
+  </section>
+
+  <script>
+    const reinForm = document.getElementById('reinstarterForm');
+    const reinStatus = document.getElementById('reinstarterStatus');
+
+    if (reinForm) {
+      reinForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        reinStatus.textContent = 'Sending…';
+
+        const data = Object.fromEntries(new FormData(reinForm).entries());
+        data.source = 'reinstarter';
+
+        try {
+          const res = await fetch('/api/submit-audit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          if (res.ok) {
+            reinStatus.textContent =
+              'Got it — watch your email for the $99 payment link and next steps.';
+            reinForm.reset();
+          } else {
+            reinStatus.textContent = 'Something went wrong — try again.';
+          }
+        } catch (err) {
+          reinStatus.textContent = 'Network error — try again.';
+        }
+      });
+    }
+  </script>
+</Layout>
