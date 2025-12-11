@@ -1,0 +1,113 @@
+---
+import Layout from './_layout.astro';
+---
+
+<Layout
+  title="Rein Solutions — AI Business Upgrades"
+  description="We upgrade businesses with AI, automation and behavioral design. Start with a $99 ReinStarter."
+>
+  <section class="hero container">
+    <div class="hero-left">
+      <h1>We upgrade the parts of your business that make you lose customers.</h1>
+      <p>
+        AI + behavioral design + automation — fast, measurable, and human-centered.
+        Start with ReinStarter $99.
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="/offer">Get ReinStarter $99</a>
+        <button class="btn ghost" id="quickAuditBtn">Quick Audit</button>
+      </div>
+      <p class="muted">Fast delivery • 48-hour implementation • AI + behavior tech</p>
+    </div>
+
+    <div class="hero-right">
+      <div class="mini-audit">
+        <h3>Instant Business Audit</h3>
+        <p>Tell us 3 things and we’ll send a Quick Wins summary.</p>
+        <form id="auditForm">
+          <label>
+            Business Name
+            <input name="business" required />
+          </label>
+          <label>
+            Website or Google Profile URL
+            <input name="url" type="url" />
+          </label>
+          <label>
+            Top problem (1 sentence)
+            <input name="problem" />
+          </label>
+          <div class="form-row">
+            <button type="submit" class="btn primary">Send Audit</button>
+            <div id="auditStatus" class="status"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <h2>What we fix</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h4>Lead flow</h4>
+        <p>Automations that capture, qualify, and convert more leads.</p>
+      </div>
+      <div class="card">
+        <h4>Google visibility</h4>
+        <p>Google Business optimization and local SEO to increase calls.</p>
+      </div>
+      <div class="card">
+        <h4>Revenue systems</h4>
+        <p>Booking flows, follow-ups, and funnels built for real customers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="offer-strip">
+    <div class="container">
+      <h3>ReinStarter — $99</h3>
+      <p>Mini audit + 1 automation + copy refresh + social starter pack.</p>
+      <a class="btn large primary" href="/offer">Start with $99</a>
+    </div>
+  </section>
+
+  <script>
+    const auditForm = document.getElementById('auditForm');
+    const auditStatus = document.getElementById('auditStatus');
+    const quickAuditBtn = document.getElementById('quickAuditBtn');
+
+    if (quickAuditBtn) {
+      quickAuditBtn.addEventListener('click', () => {
+        auditForm.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+
+    if (auditForm) {
+      auditForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        auditStatus.textContent = 'Sending…';
+
+        const data = Object.fromEntries(new FormData(auditForm).entries());
+        data.source = 'audit';
+
+        try {
+          const res = await fetch('/api/submit-audit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          if (res.ok) {
+            auditStatus.textContent = 'Got it — check your email soon.';
+            auditForm.reset();
+          } else {
+            auditStatus.textContent = 'Something went wrong — try again.';
+          }
+        } catch (err) {
+          auditStatus.textContent = 'Network error — try again.';
+        }
+      });
+    }
+  </script>
+</Layout>
