@@ -1,0 +1,61 @@
+---
+const {
+  title = 'Rein Solutions',
+  description = 'We upgrade businesses with AI, automation, and behavioral design.'
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script defer src="/scripts/echo-concierge.js"></script>
+
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Rein Solutions",
+        "url": "https://reinsolutions.xyz",
+        "logo": "https://reinsolutions.xyz/assets/logo.png"
+      })}
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="logo" href="/">Rein Solutions</a>
+        <nav>
+          <a href="/services">Services</a>
+          <a href="/cases">Case Studies</a>
+          <a href="/offer">ReinStarter $99</a>
+          <a href="/hub">Hub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      {Astro.slots.default}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div>© {new Date().getFullYear()} Rein Solutions</div>
+        <div>
+          <a href="https://elevatedlives.xyz" target="_blank" rel="noopener">
+            Elevated Lives
+          </a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
